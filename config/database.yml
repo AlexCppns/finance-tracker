@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  database: finance_tracker
+  user: postgres # Also accept 'username' as key, if both are present 'username' is used
+  password: e4rzH1tgv
+
+production:
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] %>

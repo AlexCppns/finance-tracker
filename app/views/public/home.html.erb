@@ -1,0 +1,117 @@
+<h1>Introduction</h1>
+<p>
+ lorem ipsum
+</p>
+
+<h2>Investments overview</h2>
+
+<p>Most current data on my holdings:</p>
+
+<canvas id="investment-pie" width="400" height="150"></canvas>
+<div class="clearfix"></div>
+<br />
+<br />
+<br />
+<br />
+<p>Below are charts showing the evolution of my portfolios with time:<p/>
+<br />
+<canvas id="total-chart" width="400" height="150"></canvas>
+
+<br />
+<div class="clearfix"></div>
+
+
+<canvas id="crypto-chart" width="400" height="150"></canvas>
+<br />
+<div class="clearfix"></div>
+<canvas id="stock-chart" width="400" height="150"></canvas>
+
+<div class="clearfix"></div>
+
+
+
+<br />
+<canvas id="retirement-chart" width="400" height="150"></canvas>
+
+
+<div class="footer container" style="margin-top: 60px; padding-top: 20px; margin-bottom: 30px; text-align: center; border-top: 1px solid grey;">
+  <h3>Support me if you like this page:</h3>
+  <br />
+ <p style="color: lightcoral;">support links</p>
+</div>
+
+<script>
+    var addChartData = function(data1, data2, data3){
+        return data1.map(function(point, index) {
+            return {
+                x: point.x,
+                 y: point.y + data2[index].y + data3[index].y
+            };
+        })
+    };
+
+    var stockChartContainer = document.getElementById("stock-chart").getContext('2d');
+    var cryptoChartContainer = document.getElementById("crypto-chart").getContext('2d');
+    var retirementChartContainer = document.getElementById("retirement-chart").getContext('2d');
+    var totalChartContainer = document.getElementById("total-chart").getContext('2d');
+
+    var investmentPie = document.getElementById('investment-pie').getContext('2d');
+
+    var colorsStock   = { background: 'rgba(255, 99, 132, 0.2)', border: 'rgba(255, 99, 132, 1)' };
+    var colorsCrypto  = { background: 'rgba(54, 162, 235, 0.2)', border: 'rgba(54, 162, 235, 1)' };
+    var colorsSavings = { background: 'rgba(255, 206, 86, 0.2)', border: 'rgba(255, 206, 86, 1)' };
+    var colorsTotal   = { background: 'rgba(75, 192, 192, 0.2)', border: 'rgba(75, 192, 192, 1)' };
+
+    var colorsPieBackground = [ colorsSavings.background, colorsCrypto.background, colorsStock.background ];
+    var colorsPieBorders = [ colorsSavings.border, colorsCrypto.border, colorsStock.border ];
+
+    var colorsPie = { backgroundColor: colorsPieBackground, borderColor: colorsPieBorders };
+
+    var yLegend = 'Value in CAD';
+
+    var currentDataHardcoded = {
+        savings: 6.96,
+        crypto: 4.14,
+        stocks: 4.39
+    };
+
+    var range = { min: new Date(2017, (12 - 1) - 1), max: new Date(2018, 3) };
+
+    var dataSavings = [
+        { x: new Date(2017, 12 - 1), y: 1.10 },
+        { x: new Date(2018, 0), y: 2.36 },
+        { x: new Date(2018, 1), y: 5.64 },
+        { x: new Date(2018, 2), y: currentDataHardcoded.savings }
+    ];
+
+
+    var dataStock = [
+        { x: new Date(2017, 12 - 1), y: 1.70 },
+        { x: new Date(2018, 0), y: 2.88},
+        { x: new Date(2018, 1), y: 3.02 },
+        { x: new Date(2018, 2), y: currentDataHardcoded.stocks }
+    ];
+
+    var dataCrypto = [
+        { x: new Date(2017, 12 - 1), y: 1.37 },
+        { x: new Date(2018, 0), y: 2.62 },
+        { x: new Date(2018, 1), y: 6.5 },
+        { x: new Date(2018,2), y: currentDataHardcoded.crypto }
+    ];
+
+
+    var dataTotal = addChartData(dataStock, dataCrypto, dataSavings);
+
+    var pieData = [ currentDataHardcoded.savings, currentDataHardcoded.crypto, currentDataHardcoded.stocks ];
+    var pieLabels = ['Savings', 'Crypto', 'Stocks'];
+
+
+    // pie chart initialization
+    initPieCustom(investmentPie, colorsPie, pieData, pieLabels);
+
+    // bar charts initialization
+    initChartCustom(stockChartContainer, dataStock, range, yLegend, colorsStock, 'Stock Market');
+    initChartCustom(cryptoChartContainer, dataCrypto, range, yLegend, colorsCrypto, 'Crypto Markets');
+    initChartCustom(retirementChartContainer, dataSavings, range, yLegend, colorsSavings, 'Retirement/Savings');
+    initChartCustom(totalChartContainer, dataTotal, range, yLegend, colorsTotal, 'Total Assets');
+</script>
