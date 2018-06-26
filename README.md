@@ -6,6 +6,6 @@ To do:
 
 * [ ] Update readme section
 * [ ] Pull data from backend
-* [ ] Update seed file
+* [x] Update seed file
 * [ ] Write unit tests
 * [ ] Build an admin interface with login
