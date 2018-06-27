@@ -22,5 +22,6 @@ Installation:
 * Build: `bundle`
 * Setup database
   * edit database.yml with your postgres configuration
-  * ` rake db:create && rake db:migrate`
+  * Create database: `rake db:create && rake db:migrate`
+  * Seed demo data (optional): `rake db:seed`
 * Start server: `rails s`
