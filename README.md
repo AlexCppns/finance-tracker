@@ -21,6 +21,6 @@ Dependencies:
 Installation:
 * Build: `bundle`
 * Setup database
-** edit database.yml with your postgres configuration
-** ` rake db:create && rake db:migrate`
+  * edit database.yml with your postgres configuration
+  * ` rake db:create && rake db:migrate`
 * Start server: `rails s`
