@@ -2,12 +2,20 @@
 
 ## Summary
 
-This project is 'work in progress'.
+[Work in progress]. This is a small rails application to keep track of various investments.
+
+![ScreenShot](/screenshots/main.png)
+
+
+![ScreenShot](/screenshots/charts.png)
+
+Right now there is no admin interface to fill the data in. The seed.rb file can be edited though.
+
 
 To do:
 
 * [ ] Update readme section
-* [ ] Pull data from backend
+* [x] Pull data from backend
 * [x] Update seed file
 * [ ] Write unit tests
 * [ ] Build an admin interface with login
