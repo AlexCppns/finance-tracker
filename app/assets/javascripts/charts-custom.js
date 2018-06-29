@@ -1,5 +1,18 @@
 
-var initChartCustom = function(container, data, range, label, colors, title){
+
+var initChartCustom = function(container, data, label, colors, title){
+    if(data.length === 0){
+        console.warn("Empty data!!");
+        return;
+    }
+    var driftMonths = function(date, months){
+        var newDate = new Date(date);
+        newDate.setMonth(newDate.getMonth() + months);
+        return newDate;
+    };
+
+    var range = { min: driftMonths(data[0].x, -1), max: driftMonths(data[data.length - 1].x, 1) };
+
     new Chart(container, {
         type: 'bar',
         data: {

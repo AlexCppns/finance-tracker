@@ -42,6 +42,9 @@
 
 <script>
     var addChartData = function(data1, data2, data3){
+        if(data1.length !== data2.length || data1.length !== data3.length){
+            return [];
+        }
         return data1.map(function(point, index) {
             return {
                 x: point.x,
@@ -49,6 +52,18 @@
             };
         })
     };
+
+    var filterData = function(data, code){
+        return data.filter(function(element){
+            return element.code === code;
+        }).map(function(element){
+            var date = new Date(element.created_at);
+            date.setDate(1); // move to first day of month to align monthly columns
+            return { x: date, y: element.value };
+        });
+    };
+
+
 
     var stockChartContainer = document.getElementById("stock-chart").getContext('2d');
     var cryptoChartContainer = document.getElementById("crypto-chart").getContext('2d');
@@ -69,39 +84,21 @@
 
     var yLegend = 'Value in CAD';
 
+    var backendData = [];
+    backendData = <%= @holdings.to_json.html_safe %>;
+
+    var dataSavings = filterData(backendData, 'retirement');
+    var dataStock = filterData(backendData, 'stock_market');
+    var dataCrypto = filterData(backendData, 'crypto_market');
+
     var currentDataHardcoded = {
-        savings: 6.96,
-        crypto: 4.14,
-        stocks: 4.39
+        savings: dataSavings[dataSavings.length - 1].y,
+        crypto: dataCrypto[dataCrypto.length - 1 ].y,
+        stocks: dataStock[dataStock.length - 1 ].y
     };
-
-    var range = { min: new Date(2017, (12 - 1) - 1), max: new Date(2018, 3) };
-
-    var dataSavings = [
-        { x: new Date(2017, 12 - 1), y: 1.10 },
-        { x: new Date(2018, 0), y: 2.36 },
-        { x: new Date(2018, 1), y: 5.64 },
-        { x: new Date(2018, 2), y: currentDataHardcoded.savings }
-    ];
-
-
-    var dataStock = [
-        { x: new Date(2017, 12 - 1), y: 1.70 },
-        { x: new Date(2018, 0), y: 2.88},
-        { x: new Date(2018, 1), y: 3.02 },
-        { x: new Date(2018, 2), y: currentDataHardcoded.stocks }
-    ];
-
-    var dataCrypto = [
-        { x: new Date(2017, 12 - 1), y: 1.37 },
-        { x: new Date(2018, 0), y: 2.62 },
-        { x: new Date(2018, 1), y: 6.5 },
-        { x: new Date(2018, 2), y: currentDataHardcoded.crypto }
-    ];
 
 
     var dataTotal = addChartData(dataStock, dataCrypto, dataSavings);
-
     var pieData = [ currentDataHardcoded.savings, currentDataHardcoded.crypto, currentDataHardcoded.stocks ];
     var pieLabels = ['Savings', 'Crypto', 'Stocks'];
 
@@ -110,8 +107,8 @@
     initPieCustom(investmentPie, colorsPie, pieData, pieLabels);
 
     // bar charts initialization
-    initChartCustom(stockChartContainer, dataStock, range, yLegend, colorsStock, 'Stock Market');
-    initChartCustom(cryptoChartContainer, dataCrypto, range, yLegend, colorsCrypto, 'Crypto Markets');
-    initChartCustom(retirementChartContainer, dataSavings, range, yLegend, colorsSavings, 'Retirement/Savings');
-    initChartCustom(totalChartContainer, dataTotal, range, yLegend, colorsTotal, 'Total Assets');
+    initChartCustom(stockChartContainer, dataStock, yLegend, colorsStock, 'Stock Market');
+    initChartCustom(cryptoChartContainer, dataCrypto, yLegend, colorsCrypto, 'Crypto Markets');
+    initChartCustom(retirementChartContainer, dataSavings, yLegend, colorsSavings, 'Retirement/Savings');
+    initChartCustom(totalChartContainer, dataTotal, yLegend, colorsTotal, 'Total Assets');
 </script>
